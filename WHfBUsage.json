@@ -74,8 +74,5 @@
       "name": "query - 2"
     }
   ],
-  "fallbackResourceIds": [
-    "/subscriptions/7a3feb49-fea0-478c-b7f1-c0d9d5a153fc/resourceGroups/OI-Default-West-Europe/providers/Microsoft.OperationalInsights/workspaces/mistermik"
-  ],
   "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
