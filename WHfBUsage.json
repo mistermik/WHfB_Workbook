@@ -1,57 +1,81 @@
 {
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "workbookDisplayName": {
-      "type": "string",
-      "defaultValue": "Windows Hello for Business usage",
-      "metadata": {
-        "description": "The friendly name for the workbook that is used in the Gallery or Saved List.  This name must be unique within a resource group."
-      }
-    },
-    "workbookType": {
-      "type": "string",
-      "defaultValue": "workbook",
-      "metadata": {
-        "description": "The gallery that the workbook will been shown under. Supported values include workbook, tsg, etc. Usually, this is 'workbook'"
-      }
-    },
-    "workbookSourceId": {
-      "type": "string",
-      "defaultValue": "/subscriptions/7a3feb49-fea0-478c-b7f1-c0d9d5a153fc/resourceGroups/OI-Default-West-Europe/providers/Microsoft.OperationalInsights/workspaces/mistermik",
-      "metadata": {
-        "description": "The id of resource instance to which the workbook will be associated"
-      }
-    },
-    "workbookId": {
-      "type": "string",
-      "defaultValue": "[newGuid()]",
-      "metadata": {
-        "description": "The unique guid for this workbook instance"
-      }
-    }
-  },
-  "resources": [
+  "version": "Notebook/1.0",
+  "items": [
     {
-      "name": "[parameters('workbookId')]",
-      "type": "microsoft.insights/workbooks",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2018-06-17-preview",
-      "dependsOn": [],
-      "kind": "shared",
-      "properties": {
-        "displayName": "[parameters('workbookDisplayName')]",
-        "serializedData": "{\"version\":\"Notebook/1.0\",\"items\":[{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"SigninLogs\\n| where Resource == \\\"Microsoft.aadiam\\\" and AppDisplayName == \\\"Windows Sign In\\\"\\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\\n| where authenticationMethod_== \\\"WindowsHelloForBusiness\\\" and succeeded_ == \\\"true\\\"\\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\\n| extend displayName_ = tostring(DeviceDetail.displayName)\\n| extend trustType_ = tostring(DeviceDetail.trustType)\\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\\n| summarize Count=dcount(Identity) by displayName_, Identity\\n| render piechart \",\"size\":0,\"showAnalytics\":true,\"title\":\"Windows Helo for Busines Usage - Last 30 Days\",\"timeContext\":{\"durationMs\":2592000000},\"showExportToExcel\":true,\"queryType\":0,\"resourceType\":\"microsoft.operationalinsights/workspaces\",\"chartSettings\":{\"yAxis\":[\"Count\"],\"group\":\"displayName_\",\"createOtherGroup\":null}},\"name\":\"query - 2\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"SigninLogs\\r\\n| where Resource == \\\"Microsoft.aadiam\\\" and AppDisplayName == \\\"Windows Sign In\\\"\\r\\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\\r\\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\\r\\n| where authenticationMethod_== \\\"WindowsHelloForBusiness\\\" and succeeded_ == \\\"true\\\"\\r\\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\\r\\n| extend displayName_ = tostring(DeviceDetail.displayName)\\r\\n| extend trustType_ = tostring(DeviceDetail.trustType)\\r\\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\\r\\n| summarize Count=dcount(Identity) by displayName_, Identity\",\"size\":0,\"title\":\"Distinct count of WHfB Authentication\",\"timeContext\":{\"durationMs\":2592000000},\"queryType\":0,\"resourceType\":\"microsoft.operationalinsights/workspaces\",\"visualization\":\"table\"},\"name\":\"query - 1\"},{\"type\":3,\"content\":{\"version\":\"KqlItem/1.0\",\"query\":\"SigninLogs\\r\\n| where Resource == \\\"Microsoft.aadiam\\\" and AppDisplayName == \\\"Windows Sign In\\\"\\r\\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\\r\\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\\r\\n| where authenticationMethod_== \\\"WindowsHelloForBusiness\\\" and succeeded_ == \\\"true\\\"\\r\\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\\r\\n| extend displayName_ = tostring(DeviceDetail.displayName)\\r\\n| extend trustType_ = tostring(DeviceDetail.trustType)\\r\\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\\r\\n| extend latitude_ = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).latitude)\\r\\n| extend longitude = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).longitude)\\r\\n| extend city_ = tostring(LocationDetails.city)\\r\\n| summarize Count = count() by displayName_, Identity, latitude_, longitude\",\"size\":0,\"title\":\"WHfB Total Count of Authentication\",\"timeContext\":{\"durationMs\":2592000000},\"queryType\":0,\"resourceType\":\"microsoft.operationalinsights/workspaces\",\"visualization\":\"map\",\"mapSettings\":{\"locInfo\":\"LatLong\",\"locInfoColumn\":\"city_\",\"latitude\":\"latitude_\",\"longitude\":\"longitude\",\"sizeAggregation\":\"Sum\",\"labelSettings\":\"displayName_\",\"legendMetric\":\"Count\",\"legendAggregation\":\"Sum\",\"itemColorSettings\":{\"nodeColorField\":\"Count\",\"colorAggregation\":\"Sum\",\"type\":\"heatmap\",\"heatmapPalette\":\"greenRed\"}}},\"name\":\"query - 2\"}],\"isLocked\":false,\"fallbackResourceIds\":[\"/subscriptions/7a3feb49-fea0-478c-b7f1-c0d9d5a153fc/resourceGroups/OI-Default-West-Europe/providers/Microsoft.OperationalInsights/workspaces/mistermik\"]}",
-        "version": "1.0",
-        "sourceId": "[parameters('workbookSourceId')]",
-        "category": "[parameters('workbookType')]"
-      }
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SigninLogs\n| where Resource == \"Microsoft.aadiam\" and AppDisplayName == \"Windows Sign In\"\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\n| where authenticationMethod_== \"WindowsHelloForBusiness\" and succeeded_ == \"true\"\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\n| extend displayName_ = tostring(DeviceDetail.displayName)\n| extend trustType_ = tostring(DeviceDetail.trustType)\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\n| summarize Count=dcount(Identity) by displayName_, Identity\n| render piechart ",
+        "size": 0,
+        "showAnalytics": true,
+        "title": "Windows Helo for Busines Usage - Last 30 Days",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "showExportToExcel": true,
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "chartSettings": {
+          "yAxis": [
+            "Count"
+          ],
+          "group": "displayName_",
+          "createOtherGroup": null
+        }
+      },
+      "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SigninLogs\r\n| where Resource == \"Microsoft.aadiam\" and AppDisplayName == \"Windows Sign In\"\r\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\r\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\r\n| where authenticationMethod_== \"WindowsHelloForBusiness\" and succeeded_ == \"true\"\r\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\r\n| extend displayName_ = tostring(DeviceDetail.displayName)\r\n| extend trustType_ = tostring(DeviceDetail.trustType)\r\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\r\n| summarize Count=dcount(Identity) by displayName_, Identity",
+        "size": 0,
+        "title": "Distinct count of WHfB Authentication",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "table"
+      },
+      "name": "query - 1"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "SigninLogs\r\n| where Resource == \"Microsoft.aadiam\" and AppDisplayName == \"Windows Sign In\"\r\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\r\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\r\n| where authenticationMethod_== \"WindowsHelloForBusiness\" and succeeded_ == \"true\"\r\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\r\n| extend displayName_ = tostring(DeviceDetail.displayName)\r\n| extend trustType_ = tostring(DeviceDetail.trustType)\r\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\r\n| extend latitude_ = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).latitude)\r\n| extend longitude = tostring(parse_json(tostring(LocationDetails.geoCoordinates)).longitude)\r\n| extend city_ = tostring(LocationDetails.city)\r\n| summarize Count = count() by displayName_, Identity, latitude_, longitude",
+        "size": 0,
+        "title": "WHfB Total Count of Authentication",
+        "timeContext": {
+          "durationMs": 2592000000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "visualization": "map",
+        "mapSettings": {
+          "locInfo": "LatLong",
+          "locInfoColumn": "city_",
+          "latitude": "latitude_",
+          "longitude": "longitude",
+          "sizeAggregation": "Sum",
+          "labelSettings": "displayName_",
+          "legendMetric": "Count",
+          "legendAggregation": "Sum",
+          "itemColorSettings": {
+            "nodeColorField": "Count",
+            "colorAggregation": "Sum",
+            "type": "heatmap",
+            "heatmapPalette": "greenRed"
+          }
+        }
+      },
+      "name": "query - 2"
     }
   ],
-  "outputs": {
-    "workbookId": {
-      "type": "string",
-      "value": "[resourceId( 'microsoft.insights/workbooks', parameters('workbookId'))]"
-    }
-  },
-  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#"
+  "fallbackResourceIds": [
+    "/subscriptions/7a3feb49-fea0-478c-b7f1-c0d9d5a153fc/resourceGroups/OI-Default-West-Europe/providers/Microsoft.OperationalInsights/workspaces/mistermik"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
 }
