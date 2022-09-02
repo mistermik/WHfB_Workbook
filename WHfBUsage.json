@@ -8,7 +8,7 @@
         "query": "SigninLogs\n| where Resource == \"Microsoft.aadiam\" and AppDisplayName == \"Windows Sign In\"\n| extend authenticationMethod_ = tostring(parse_json(AuthenticationDetails)[0].authenticationMethod)\n| extend succeeded_ = tostring(parse_json(AuthenticationDetails)[0].succeeded)\n| where authenticationMethod_== \"Windows Hello for Business\" and succeeded_ == \"true\"\n| extend authenticationStepDateTime_ = todatetime(tostring(parse_json(AuthenticationDetails)[0].authenticationStepDateTime))\n| extend displayName_ = tostring(DeviceDetail.displayName)\n| extend trustType_ = tostring(DeviceDetail.trustType)\n| extend deviceId_ = tostring(DeviceDetail.deviceId)\n| summarize Count=dcount(Identity) by displayName_, Identity\n| render piechart ",
         "size": 0,
         "showAnalytics": true,
-        "title": "Windows Helo for Busines Usage - Last 30 Days",
+        "title": "Windows Hello for Busines Usage - Last 30 Days",
         "timeContext": {
           "durationMs": 2592000000
         },
